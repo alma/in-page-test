@@ -18,7 +18,7 @@ export namespace InPage {
     function embedded(element: HTMLElement) {
       currentElement = element;
       console.log("embedded");
-      //TODO innerHTML iframe
+      // TODO innerHTML iframe
     }
 
     function payMethod(toto: number) {
