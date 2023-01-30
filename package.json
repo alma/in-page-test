@@ -9,6 +9,9 @@
     "watch": "tsc && vite build --watch",
     "preview": "vite preview"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/alma/in-page-test.git"
