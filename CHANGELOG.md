@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/alma/in-page-test/compare/v1.1.0...v1.1.1) (2023-01-30)
+
+
+### Bug Fixes
+
+* file name ([3aa74c0](https://github.com/alma/in-page-test/commit/3aa74c0072a14a5cc4c0e882eeb063403b65651a))
+
 # [1.1.0](https://github.com/alma/in-page-test/compare/v1.0.7...v1.1.0) (2023-01-30)
 
 
