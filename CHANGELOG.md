@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/alma/in-page-test/compare/v1.0.7...v1.1.0) (2023-01-30)
+
+
+### Features
+
+* import code from in-page repo ([fd7dc43](https://github.com/alma/in-page-test/commit/fd7dc430ce49e94678dc54a4b20c1f835fbc1e24))
+
 ## [1.0.7](https://github.com/alma/in-page-test/compare/v1.0.6...v1.0.7) (2023-01-30)
 
 
