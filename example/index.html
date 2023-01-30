@@ -7,19 +7,34 @@
     <title>Document</title>
   </head>
   <body>
-    <div id="root">coucou</div>
+    <div id="root">
+      Welcome to the InPage example demo : <button id="close">fermer</button>
+      <button id="mount">remount</button>
+    </div>
     <div id="embedded"></div>
     <script src="/dist/in-page.umd.js"></script>
     <script>
-      const inPage = Alma.InPage.initialize("paymentId", "TEST", {
-        onClose: () => console.log("close"),
-        onSuccess: () => console.log("close"),
-        onFailure: () => console.log("close"),
-      });
+      const inPage = Alma.InPage.initialize(
+        "11w6Iv25zkkcpGP80fj8McEQ6XwOe18gwr",
+        "TEST",
+        {
+          onSuccess: () => console.log("custom onSuccess"),
+          onFailure: () => console.log("custom onFailure"),
+          onClose: () => console.log("custom onClose"),
+          // onLoaded ? ca serait pas mal.
+        }
+      );
 
       inPage.mount("#embedded");
-      inPage.pay();
-      inPage.unmount();
+      inPage.pay(); // <- penser a ajouter un check isCheckoutReady
+
+      document.getElementById("close").addEventListener("click", () => {
+        inPage.unmount();
+      });
+
+      document.getElementById("mount").addEventListener("click", () => {
+        inPage.mount("#embedded");
+      });
     </script>
   </body>
 </html>
