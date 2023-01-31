@@ -19,6 +19,31 @@ export namespace InPage {
   ) {
     const store = createStore();
 
+    window.addEventListener(
+      "message",
+      (event) => {
+        // if (event.origin === "https://localhost:3000") {
+        console.log(`InPage: message from ${event.origin}`, event.data);
+
+        const payload = event.data.payload;
+
+        switch (event.data.type) {
+          case "payment_status":
+            if (payload === "payment_in_progress") {
+            }
+            break;
+
+          case "installment_selected":
+            console.log("installments", payload.installments_count);
+            break;
+
+          default:
+            console.warn("Weird message type", event.data.type);
+        }
+      },
+      false
+    );
+
     return {
       mount: makeMount(paymentId, options, store),
       pay: makePay(paymentId, options, store),
@@ -26,36 +51,6 @@ export namespace InPage {
     };
   }
 }
-
-// window.addEventListener(
-//   "message",
-//   (event) => {
-//     // if (event.origin === "https://localhost:3000") {
-//     console.log(`Fakoo: message from ${event.origin}`, event.data);
-
-//     const payload = event.data.payload;
-
-//     switch (event.data.type) {
-//       case "payment_status":
-//         $("#payment-status-in-page").text(payload);
-
-//         if (payload === "payment_in_progress" && !isModalOpen) {
-//           $("#fragments-modal").modal("show");
-//           $("#fragments-modal-iframe").attr("src", IN_MODAL_PAGE_URL);
-//           isModalOpen = true;
-//         }
-//         break;
-
-//       case "installment_selected":
-//         $("#amount-in-page").text(payload.installments_count);
-//         break;
-
-//       default:
-//         console.warn("Weird message type", event.data.type);
-//     }
-//   },
-//   false
-// );
 
 // // Click on merchand pay button:
 // $("#send-event-to-child").on("click", function (event) {

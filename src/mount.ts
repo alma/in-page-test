@@ -16,7 +16,7 @@ export const makeMount =
 
     store.setEmbeddedSelector(selector);
 
-    injectIframe(selector, `${websiteUrl}${paymentId}`);
+    injectIframe(selector, `${websiteUrl}${paymentId}/in-page?embedded=true`);
   };
 
 function injectIframe(selector: string, url: string) {
