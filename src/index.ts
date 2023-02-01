@@ -51,8 +51,3 @@ export namespace InPage {
     };
   }
 }
-
-// // Click on merchand pay button:
-// $("#send-event-to-child").on("click", function (event) {
-//   iFrame.contentWindow.postMessage({ type: "user_wants_to_pay", payload: null }, "*");
-// });

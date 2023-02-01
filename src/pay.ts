@@ -1,3 +1,4 @@
+import { showModal } from "./modal";
 import { Store } from "./store";
 import { InitializeOptions } from "./types";
 
@@ -10,6 +11,9 @@ export const makePay =
       `Pay() on payment ${paymentId}, current selector is: ${store.getEmbeddedSelector()}`
     );
 
+    showModal();
+
+    // TODO Move this inside an event listener that states that the payment is done
     if (options.onSuccess) {
       options.onSuccess();
     } else {
