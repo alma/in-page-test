@@ -19,8 +19,4 @@ export const makePay =
     } else {
       console.log("Redirection to redirection_url");
     }
-
-    // <!--  Adding the allow property to the iframe gives permission to providers to request camera access  -->
-    // <iframe id="fragments-modal-iframe" class="checkout-iframe" allow="camera *;"></iframe>
-    // Merci Timur
   };

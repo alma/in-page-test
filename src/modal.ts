@@ -15,6 +15,7 @@ export function showModal() {
   const modalBody = createModalBodyElement();
   const modalClose = createModalCloseElement();
   const modalLogo = createModalLogoElement();
+  const iframe = createIframeElement();
 
   document.body.appendChild(wrapper);
   wrapper.appendChild(modalContainer);
@@ -22,12 +23,15 @@ export function showModal() {
   modalContainer.appendChild(modalBody);
   modalBody.appendChild(modalClose);
   modalBody.appendChild(modalLogo);
+  modalBody.appendChild(iframe);
 }
 
 export function hideModal() {
   const modal = document.getElementById("in-page-modal-wrapper");
   if (modal) {
-    modal.remove();
+    if (confirm("Are you sure you want to leave the payment page ?")) {
+      modal.remove();
+    }
   }
 }
 
@@ -58,21 +62,38 @@ function createModalOverlayElement() {
 function createModalBodyElement() {
   const element = document.createElement("div");
   element.id = "in-page-modal-body";
-  // Create the iframe here.
+
   return element;
 }
+
+function createIframeElement() {
+  const element = document.createElement("iframe");
+  element.id = "in-page-modal-iframe";
+  element.allow = "camera *;";
+  element.src = "https://almapay.com";
+  return element;
+}
+
 function createModalCloseElement() {
   const element = document.createElement("img");
   element.id = "in-page-modal-close";
+  element.title = "Close the alma modal (you'll lose your data)";
   element.onclick = hideModal;
-  element.src = closeButton;
+  element.onkeyup = (event) => {
+    if (event.key === "Enter") {
+      hideModal();
+    }
+  };
 
+  element.src = closeButton;
+  element.tabIndex = 0;
   return element;
 }
 
 function createModalLogoElement() {
   const element = document.createElement("img");
   element.id = "in-page-modal-logo";
+  element.title = "Alma logo";
   element.src = almaLogo;
 
   return element;
