@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/alma/in-page-test/compare/v1.1.1...v1.2.0) (2023-02-02)
+
+
+### Features
+
+* add logo and close button and clean css ([e8e1a81](https://github.com/alma/in-page-test/commit/e8e1a81f429731bedb672eebc3301ff266b80871))
+* add modal with style still in progress and remove react dependency ([4b35432](https://github.com/alma/in-page-test/commit/4b3543234136b597ef1adfa18387847238d7720a))
+* design modal with logo and close button ([31e6823](https://github.com/alma/in-page-test/commit/31e6823f019319ed0e877c0faac7c268808ba6fa))
+
 ## [1.1.1](https://github.com/alma/in-page-test/compare/v1.1.0...v1.1.1) (2023-01-30)
 
 
