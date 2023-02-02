@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/alma/in-page-test/compare/v1.2.0...v1.2.1) (2023-02-02)
+
+
+### Bug Fixes
+
+* selector, more properties ([68c504f](https://github.com/alma/in-page-test/commit/68c504f95d0f33cef5b6926b7a9df5fe3ef51b36))
+
 # [1.2.0](https://github.com/alma/in-page-test/compare/v1.1.1...v1.2.0) (2023-02-02)
 
 
