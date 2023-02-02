@@ -1,10 +1,11 @@
 import { style } from "./Modal/modaleStyle";
 import closeButton from "./Modal/closeButton.svg";
 import almaLogo from "./Modal/logo.svg";
+import { idPrefix } from "./Modal/helper";
 
 export function showModal() {
   // Just a check to avoid creating multiple modals
-  if (document.getElementById("in-page-modal-container")) {
+  if (document.getElementById(`${idPrefix}-wrapper`)) {
     hideModal();
     return;
   }
@@ -27,7 +28,7 @@ export function showModal() {
 }
 
 export function hideModal() {
-  const modal = document.getElementById("in-page-modal-wrapper");
+  const modal = document.getElementById(`${idPrefix}-wrapper`);
   if (modal) {
     if (confirm("Are you sure you want to leave the payment page ?")) {
       modal.remove();
@@ -40,7 +41,9 @@ function createModalWrapperElement() {
   element.innerHTML = style;
   // We create a wrapper to delete the style tag in the DOM easily
   const wrapper = document.createElement("div");
-  wrapper.id = "in-page-modal-wrapper";
+  wrapper.id = `${idPrefix}-wrapper`;
+  wrapper.role = "dialog";
+  wrapper.ariaModal = "true";
   wrapper.appendChild(element);
 
   return wrapper;
@@ -48,35 +51,37 @@ function createModalWrapperElement() {
 
 function createModalContainerElement() {
   const element = document.createElement("div");
-  element.id = "modal-element";
+  element.id = `${idPrefix}-element`;
 
   return element;
 }
 
 function createModalOverlayElement() {
   const element = document.createElement("div");
-  element.id = "in-page-modal-background";
+  element.id = `${idPrefix}-background`;
   return element;
 }
 
 function createModalBodyElement() {
   const element = document.createElement("div");
-  element.id = "in-page-modal-body";
+  element.id = `${idPrefix}-body`;
 
   return element;
 }
 
 function createIframeElement() {
   const element = document.createElement("iframe");
-  element.id = "in-page-modal-iframe";
+  element.id = `${idPrefix}-iframe`;
   element.allow = "camera *;";
   element.src = "https://almapay.com";
+  element.title = "Alma payment iframe";
+
   return element;
 }
 
 function createModalCloseElement() {
   const element = document.createElement("img");
-  element.id = "in-page-modal-close";
+  element.id = `${idPrefix}-close`;
   element.title = "Close the alma modal (you'll lose your data)";
   element.onclick = hideModal;
   element.onkeyup = (event) => {
@@ -92,7 +97,7 @@ function createModalCloseElement() {
 
 function createModalLogoElement() {
   const element = document.createElement("img");
-  element.id = "in-page-modal-logo";
+  element.id = `${idPrefix}-logo`;
   element.title = "Alma logo";
   element.src = almaLogo;
 
