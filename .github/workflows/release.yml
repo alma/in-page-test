@@ -16,6 +16,9 @@ jobs:
         with:
           node-version: 18.13
       - run: npm ci
+      - run: |
+          echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
+          cat .npmrc
         # We do not create a commit with the update package version
         # Therefore the package.*.json in the repository will always have out-of-sync versions
       - run: npm --no-git-tag-version version ${{ github.event.release.tag_name }}
