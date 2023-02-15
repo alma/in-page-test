@@ -1,8 +1,10 @@
-import { getElement, elementNotFound } from "./helpers";
+import {
+  getElement,
+  elementNotFound,
+  getCheckoutUrlBasedOnEnv,
+} from "./helpers";
 import { Store } from "./store";
 import { InitializeOptions } from "./types";
-
-const websiteUrl = "https://localhost:3000/";
 
 export const makeMount =
   (paymentId: string, options: InitializeOptions, store: Store) =>
@@ -16,7 +18,8 @@ export const makeMount =
 
     store.setEmbeddedSelector(selector);
 
-    injectIframe(selector, `${websiteUrl}${paymentId}/in-page?embedded=true`);
+    const url = getCheckoutUrlBasedOnEnv(options.environment);
+    injectIframe(selector, `${url}/${paymentId}/in-page/embedded/`);
   };
 
 function injectIframe(selector: string, url: string) {
