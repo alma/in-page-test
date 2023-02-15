@@ -1,9 +1,11 @@
-import { style } from "./Modal/modaleStyle";
-import closeButton from "./Modal/closeButton.svg";
-import almaLogo from "./Modal/logo.svg";
-import { idPrefix } from "./Modal/helper";
+import { style } from "./modaleStyle";
+import closeButton from "./closeButton.svg";
+import almaLogo from "./logo.svg";
+import { idPrefix } from "./helper";
+import { ENV } from "../types";
+import { getCheckoutUrlBasedOnEnv } from "../helpers";
 
-export function showModal() {
+export function showModal(paymentId: string, env?: ENV) {
   // Just a check to avoid creating multiple modals
   if (document.getElementById(`${idPrefix}-wrapper`)) {
     hideModal();
@@ -16,7 +18,7 @@ export function showModal() {
   const modalBody = createModalBodyElement();
   const modalClose = createModalCloseElement();
   const modalLogo = createModalLogoElement();
-  const iframe = createIframeElement();
+  const iframe = createIframeElement(paymentId, env);
 
   document.body.appendChild(wrapper);
   wrapper.appendChild(modalContainer);
@@ -27,10 +29,13 @@ export function showModal() {
   modalBody.appendChild(iframe);
 }
 
-export function hideModal() {
+export function hideModal(showConfirmation = true) {
   const modal = document.getElementById(`${idPrefix}-wrapper`);
   if (modal) {
-    if (confirm("Are you sure you want to leave the payment page ?")) {
+    if (
+      !showConfirmation ||
+      confirm("Are you sure you want to leave the payment page ?")
+    ) {
       modal.remove();
     }
   }
@@ -69,11 +74,11 @@ function createModalBodyElement() {
   return element;
 }
 
-function createIframeElement() {
+function createIframeElement(paymentId: string, env?: ENV) {
   const element = document.createElement("iframe");
   element.id = `${idPrefix}-iframe`;
   element.allow = "camera *;";
-  element.src = "https://almapay.com";
+  element.src = `${getCheckoutUrlBasedOnEnv(env)}/${paymentId}/in-page/modal/`;
   element.title = "Alma payment iframe";
 
   return element;
@@ -83,7 +88,7 @@ function createModalCloseElement() {
   const element = document.createElement("img");
   element.id = `${idPrefix}-close`;
   element.title = "Close the alma modal (you'll lose your data)";
-  element.onclick = hideModal;
+  element.onclick = hideModal.bind(null, true);
   element.onkeyup = (event) => {
     if (event.key === "Enter") {
       hideModal();

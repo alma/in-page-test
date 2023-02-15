@@ -1,22 +1,14 @@
-import { showModal } from "./modal";
+import { hashPaymentId } from "./helpers";
+import { sendMessage } from "./messages/send";
 import { Store } from "./store";
 import { InitializeOptions } from "./types";
 
-/**
- * TODO
- */
 export const makePay =
-  (paymentId: string, options: InitializeOptions, store: Store) => () => {
-    console.log(
-      `Pay() on payment ${paymentId}, current selector is: ${store.getEmbeddedSelector()}`
+  (paymentId: string, options: InitializeOptions, store: Store) => async () => {
+    const hash = await hashPaymentId(paymentId);
+    return sendMessage(
+      store,
+      { type: "user_wants_to_pay", hash },
+      options.environment
     );
-
-    showModal();
-
-    // TODO Move this inside an event listener that states that the payment is done
-    if (options.onSuccess) {
-      options.onSuccess();
-    } else {
-      console.log("Redirection to redirection_url");
-    }
   };

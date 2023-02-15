@@ -16,10 +16,10 @@ export const makeUnmount =
       return;
     }
 
-    if (!options.onClose) {
-      console.log("onClose is not specified");
+    if (!options.onModalClosed) {
+      console.log("onModalClosed is not specified");
     } else {
-      options.onClose();
+      options.onModalClosed();
     }
 
     const element = getElement(selector);
