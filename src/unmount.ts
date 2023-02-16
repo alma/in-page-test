@@ -1,28 +1,23 @@
 import { getElement } from "./helpers";
+import { removeModal } from "./Modal/modal";
 import { Store } from "./store";
-import { InitializeOptions } from "./types";
 
 /**
  * Unmounts the iframe (for the Embedded component) from the dom
  *
  * @param parentOptions the options passed to the initialize function
  */
-export const makeUnmount = (options: InitializeOptions, store: Store) => () => {
+export function unmount(store: Store, unsubscribe: () => void) {
   const selector = store.getEmbeddedSelector();
 
-  // This condition is to avoid calling the onClose event if the element is already destroyed
+  removeModal(false);
+  unsubscribe();
+
+  // This condition is to avoid cleaning the DOM, if it is already removed
   if (!selector) {
     return;
   }
-
-  if (!options.onModalClosed) {
-    console.log("onModalClosed is not specified");
-  } else {
-    options.onModalClosed();
-  }
-
-  const element = getElement(selector);
+  const embeddedParent = getElement(selector);
   store.setEmbeddedSelector(null);
-  if (!element?.childNodes[0]) return;
-  element?.removeChild(element.childNodes[0]);
-};
+  embeddedParent?.removeChild(embeddedParent.childNodes[0]);
+}

@@ -6,7 +6,6 @@ export default defineConfig({
   plugins: [
     dts({
       skipDiagnostics: false,
-      logDiagnostics: false,
       outputDir: "dist/types",
     }),
   ],

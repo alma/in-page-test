@@ -79,7 +79,7 @@ document.getElementById("my-pay-button").addEventListener("click", () => {
 
 ## unmount
 
-This method will unmount the inPage, and remove content of the DOM element that is specified above.
+This method will unmount the inPage, and remove content of the DOM element that is specified above. It will also close the connection with Alma.
 
 ```js
 inPage.unmount();

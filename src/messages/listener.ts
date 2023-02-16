@@ -23,21 +23,16 @@ export function startListener(paymentId: string, env: ENV) {
       return false;
     }
 
-    console.log(`InPage: message from ${event.origin}`, event.data);
-
     const payload = event.data.payload;
 
-    switch (event.data.type) {
-      case "in_page_status":
-        inPageStatusSubscribers
-          .filter(({ eventName }) => eventName === payload)
-          .forEach(({ callback }) => {
-            callback();
-          });
-        break;
-
-      default:
-        console.warn("Weird message type", event.data.type);
+    if (event.data.type === "in_page_status") {
+      inPageStatusSubscribers
+        .filter(({ eventName }) => eventName === payload)
+        .forEach(({ callback }) => {
+          callback();
+        });
+    } else {
+      console.warn("Weird message type", event.data.type);
     }
   };
 

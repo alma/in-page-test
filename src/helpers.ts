@@ -4,7 +4,7 @@ import { ENV } from "./types";
  * Get the element from the DOM, if none is found, throw an error.
  *
  * @param selector string of the current element
- * @returns HTMLElement | null
+ * @returns HTMLElement | throw exception
  */
 export const getElement = (selector: string) => {
   const element = document.getElementById(selector.replace("#", ""));

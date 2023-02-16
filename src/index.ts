@@ -1,11 +1,11 @@
-import { InitializeOptions } from "./types";
 import { createStore } from "./store";
+import { InitializeOptions } from "./types";
 
-import { makeMount } from "./mount";
-import { makeStartPayment } from "./startPayment";
-import { makeUnmount } from "./unmount";
-import { removeModal, removeModalCloseElement, showModal } from "./Modal/modal";
 import { startListener } from "./messages/listener";
+import { removeModal, removeModalCloseElement, showModal } from "./Modal/modal";
+import { mount } from "./mount";
+import { startPayment } from "./startPayment";
+import { unmount } from "./unmount";
 
 export namespace InPage {
   /**
@@ -18,24 +18,19 @@ export namespace InPage {
     paymentId: string,
     options: InitializeOptions = {}
   ) {
-    const optionsWithDefaultEnv = {
-      ...options,
-      environment: options.environment ?? "LIVE",
-    };
+    const store = createStore(paymentId, options.environment);
 
-    const store = createStore();
-    const { onInPageStatusChanged } = startListener(
-      paymentId,
-      optionsWithDefaultEnv.environment
+    const { onInPageStatusChanged, unsubscribe } = startListener(
+      store.getPaymentId(),
+      store.getEnvironment()
     );
 
     onInPageStatusChanged("embedded_loaded", () => {
       store.setIsCheckoutLoaded(true);
-      console.log("Observer tells Checkout is loaded");
     });
 
     onInPageStatusChanged("can_open_modal", () => {
-      showModal(paymentId, optionsWithDefaultEnv.environment);
+      showModal(store.getPaymentId(), store.getEnvironment());
     });
 
     onInPageStatusChanged("payment_succeeded", () => {
@@ -54,13 +49,9 @@ export namespace InPage {
     });
 
     return {
-      mount: makeMount(paymentId, optionsWithDefaultEnv.environment, store),
-      startPayment: makeStartPayment(
-        paymentId,
-        optionsWithDefaultEnv.environment,
-        store
-      ),
-      unmount: makeUnmount(optionsWithDefaultEnv, store),
+      mount: (selector: string) => mount(store, selector),
+      startPayment: () => startPayment(store),
+      unmount: () => unmount(store, unsubscribe),
     };
   }
 }
