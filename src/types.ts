@@ -9,7 +9,7 @@ export type ENV =
 
 export type InitializeOptions = {
   environment?: ENV;
-  onPaymentSucceed?: () => void;
+  onPaymentSucceeded?: () => void;
   onPaymentRejected?: (error: Error) => void;
   onModalClosed?: () => void;
 };

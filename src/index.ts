@@ -36,8 +36,8 @@ export namespace InPage {
     onInPageStatusChanged("payment_success", () => {
       hideModal(false);
 
-      if (options.onPaymentSucceed) {
-        options.onPaymentSucceed();
+      if (options.onPaymentSucceeded) {
+        options.onPaymentSucceeded();
       } else {
         // TODO: will require to fetch data, maybe from a GET payment?
         console.log("Redirection to redirection_url");
