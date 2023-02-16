@@ -1,14 +1,9 @@
-import {
-  getElement,
-  elementNotFound,
-  getCheckoutUrlBasedOnEnv,
-} from "./helpers";
+import { elementNotFound, getCheckoutUrl, getElement } from "./helpers";
 import { Store } from "./store";
-import { InitializeOptions } from "./types";
+import { ENV } from "./types";
 
 export const makeMount =
-  (paymentId: string, options: InitializeOptions, store: Store) =>
-  (selector: string) => {
+  (paymentId: string, env: ENV, store: Store) => (selector: string) => {
     if (!selector) {
       elementNotFound();
     }
@@ -18,8 +13,9 @@ export const makeMount =
 
     store.setEmbeddedSelector(selector);
 
-    const url = getCheckoutUrlBasedOnEnv(options.environment);
-    injectIframe(selector, `${url}/${paymentId}/in-page/embedded/`);
+    const url = getCheckoutUrl(env, paymentId, "/in-page/embedded/");
+
+    injectIframe(selector, url);
   };
 
 function injectIframe(selector: string, url: string) {

@@ -22,7 +22,7 @@ export function elementNotFound() {
   throw Error("Element not found, please add an id selector for the iframe");
 }
 
-export function getCheckoutUrlBasedOnEnv(env?: ENV) {
+export function getCheckoutUrlBasedOnEnv(env: ENV) {
   switch (env) {
     case "LOCAL":
       return "https://localhost:3000";
@@ -37,6 +37,10 @@ export function getCheckoutUrlBasedOnEnv(env?: ENV) {
     default:
       return "https://checkout.almapay.com";
   }
+}
+
+export function getCheckoutUrl(env: ENV, paymentId: string, url: string) {
+  return getCheckoutUrlBasedOnEnv(env) + "/" + paymentId + url;
 }
 
 /**

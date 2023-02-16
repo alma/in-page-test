@@ -1,21 +1,25 @@
 import { getCheckoutUrlBasedOnEnv, hashPaymentId } from "../helpers";
-import { ENV } from "../types";
+import { ENV, MessageType } from "../types";
 
 type Subscriber = {
   eventName: string;
   callback: () => void;
 };
 
-export function startListener(paymentId: string, env?: ENV) {
+export function startListener(paymentId: string, env: ENV) {
   const inPageStatusSubscribers: Subscriber[] = [];
 
   const listener = async (event: MessageEvent<any>) => {
-    // Listen only to Checkout:
+    // Handle messages only if:
+    // - payment id hash is matching curent one.
+    // - origin is correct
     const hashedPaymentID = await hashPaymentId(paymentId);
-    if (
-      event.origin !== getCheckoutUrlBasedOnEnv(env) &&
-      event.data.hash !== hashedPaymentID
-    ) {
+
+    if (event.origin !== getCheckoutUrlBasedOnEnv(env)) {
+      return false;
+    }
+
+    if (event.data.hash !== hashedPaymentID) {
       return false;
     }
 
@@ -43,7 +47,7 @@ export function startListener(paymentId: string, env?: ENV) {
     window.removeEventListener("message", listener, false);
   }
 
-  function onInPageStatusChanged(eventName: string, callback: () => void) {
+  function onInPageStatusChanged(eventName: MessageType, callback: () => void) {
     inPageStatusSubscribers.push({ eventName, callback });
   }
 

@@ -1,14 +1,14 @@
 import { style } from "./modaleStyle";
 import closeButton from "./closeButton.svg";
 import almaLogo from "./logo.svg";
-import { idPrefix } from "./helper";
+import { MODAL_ID_PREFIX } from "../constants";
 import { ENV } from "../types";
-import { getCheckoutUrlBasedOnEnv } from "../helpers";
+import { getCheckoutUrl } from "../helpers";
 
-export function showModal(paymentId: string, env?: ENV) {
+export function showModal(paymentId: string, env: ENV) {
   // Just a check to avoid creating multiple modals
-  if (document.getElementById(`${idPrefix}-wrapper`)) {
-    hideModal();
+  if (document.getElementById(`${MODAL_ID_PREFIX}-wrapper`)) {
+    removeModal();
     return;
   }
 
@@ -29,8 +29,8 @@ export function showModal(paymentId: string, env?: ENV) {
   modalBody.appendChild(iframe);
 }
 
-export function hideModal(showConfirmation = true) {
-  const modal = document.getElementById(`${idPrefix}-wrapper`);
+export function removeModal(showConfirmation = true) {
+  const modal = document.getElementById(`${MODAL_ID_PREFIX}-wrapper`);
   if (modal) {
     if (
       !showConfirmation ||
@@ -46,7 +46,7 @@ function createModalWrapperElement() {
   element.innerHTML = style;
   // We create a wrapper to delete the style tag in the DOM easily
   const wrapper = document.createElement("div");
-  wrapper.id = `${idPrefix}-wrapper`;
+  wrapper.id = `${MODAL_ID_PREFIX}-wrapper`;
   wrapper.role = "dialog";
   wrapper.ariaModal = "true";
   wrapper.appendChild(element);
@@ -56,29 +56,29 @@ function createModalWrapperElement() {
 
 function createModalContainerElement() {
   const element = document.createElement("div");
-  element.id = `${idPrefix}-element`;
+  element.id = `${MODAL_ID_PREFIX}-element`;
 
   return element;
 }
 
 function createModalOverlayElement() {
   const element = document.createElement("div");
-  element.id = `${idPrefix}-background`;
+  element.id = `${MODAL_ID_PREFIX}-background`;
   return element;
 }
 
 function createModalBodyElement() {
   const element = document.createElement("div");
-  element.id = `${idPrefix}-body`;
+  element.id = `${MODAL_ID_PREFIX}-body`;
 
   return element;
 }
 
-function createIframeElement(paymentId: string, env?: ENV) {
+function createIframeElement(paymentId: string, env: ENV) {
   const element = document.createElement("iframe");
-  element.id = `${idPrefix}-iframe`;
+  element.id = `${MODAL_ID_PREFIX}-iframe`;
   element.allow = "camera *;";
-  element.src = `${getCheckoutUrlBasedOnEnv(env)}/${paymentId}/in-page/modal/`;
+  element.src = getCheckoutUrl(env, paymentId, "/in-page/modal/");
   element.title = "Alma payment iframe";
 
   return element;
@@ -86,12 +86,12 @@ function createIframeElement(paymentId: string, env?: ENV) {
 
 function createModalCloseElement() {
   const element = document.createElement("img");
-  element.id = `${idPrefix}-close`;
+  element.id = `${MODAL_ID_PREFIX}-close`;
   element.title = "Close the alma modal (you'll lose your data)";
-  element.onclick = hideModal.bind(null, true);
+  element.onclick = removeModal.bind(null, true);
   element.onkeyup = (event) => {
     if (event.key === "Enter") {
-      hideModal();
+      removeModal();
     }
   };
 
@@ -100,9 +100,14 @@ function createModalCloseElement() {
   return element;
 }
 
+export function removeModalCloseElement() {
+  const element = document.getElementById(`${MODAL_ID_PREFIX}-close`);
+  element?.remove();
+}
+
 function createModalLogoElement() {
   const element = document.createElement("img");
-  element.id = `${idPrefix}-logo`;
+  element.id = `${MODAL_ID_PREFIX}-logo`;
   element.title = "Alma logo";
   element.src = almaLogo;
 

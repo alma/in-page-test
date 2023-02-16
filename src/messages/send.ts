@@ -2,7 +2,7 @@ import { getCheckoutUrlBasedOnEnv, getElement } from "../helpers";
 import { Store } from "../store";
 import { ENV, Message } from "../types";
 
-export function sendMessage(store: Store, message: Message, env?: ENV) {
+export function sendMessage(store: Store, message: Message, env: ENV) {
   if (store.getIsCheckoutLoaded() === false) {
     console.error("Can not send message yet, Checkout is not loaded.");
     return false;

@@ -1,10 +1,10 @@
-import { ENV, InitializeOptions } from "./types";
+import { InitializeOptions } from "./types";
 import { createStore } from "./store";
 
 import { makeMount } from "./mount";
-import { makePay } from "./pay";
+import { makeStartPayment } from "./startPayment";
 import { makeUnmount } from "./unmount";
-import { hideModal, showModal } from "./Modal/modal";
+import { removeModal, removeModalCloseElement, showModal } from "./Modal/modal";
 import { startListener } from "./messages/listener";
 
 export namespace InPage {
@@ -18,23 +18,32 @@ export namespace InPage {
     paymentId: string,
     options: InitializeOptions = {}
   ) {
+    const optionsWithDefaultEnv = {
+      ...options,
+      environment: options.environment ?? "LIVE",
+    };
+
     const store = createStore();
     const { onInPageStatusChanged } = startListener(
       paymentId,
-      options.environment
+      optionsWithDefaultEnv.environment
     );
 
-    onInPageStatusChanged("embedded-loaded", () => {
+    onInPageStatusChanged("embedded_loaded", () => {
       store.setIsCheckoutLoaded(true);
       console.log("Observer tells Checkout is loaded");
     });
 
-    onInPageStatusChanged("can-open-modal", () => {
-      showModal(paymentId, options.environment);
+    onInPageStatusChanged("can_open_modal", () => {
+      showModal(paymentId, optionsWithDefaultEnv.environment);
     });
 
-    onInPageStatusChanged("payment_success", () => {
-      hideModal(false);
+    onInPageStatusChanged("payment_succeeded", () => {
+      removeModalCloseElement();
+    });
+
+    onInPageStatusChanged("trigger_success_callback", () => {
+      removeModal(false);
 
       if (options.onPaymentSucceeded) {
         options.onPaymentSucceeded();
@@ -45,9 +54,13 @@ export namespace InPage {
     });
 
     return {
-      mount: makeMount(paymentId, options, store),
-      startPayment: makePay(paymentId, options, store),
-      unmount: makeUnmount(paymentId, options, store),
+      mount: makeMount(paymentId, optionsWithDefaultEnv.environment, store),
+      startPayment: makeStartPayment(
+        paymentId,
+        optionsWithDefaultEnv.environment,
+        store
+      ),
+      unmount: makeUnmount(optionsWithDefaultEnv, store),
     };
   }
 }

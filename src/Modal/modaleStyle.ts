@@ -1,4 +1,4 @@
-import { idPrefix } from "./helper";
+import { MODAL_ID_PREFIX } from "../constants";
 
 const ALMA_COLORS = {
   orange: "#FA5022",
@@ -7,7 +7,7 @@ const ALMA_COLORS = {
 };
 
 export const style = `
-#${idPrefix}-element {
+#${MODAL_ID_PREFIX}-element {
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -18,7 +18,7 @@ export const style = `
   justify-content: center;
 }
 
-#${idPrefix}-background {
+#${MODAL_ID_PREFIX}-background {
   background: ${ALMA_COLORS.backdrop};
   position: absolute;
   width: 100vw;
@@ -26,7 +26,7 @@ export const style = `
   opacity: 0.8;
 }
 
-#${idPrefix}-body {
+#${MODAL_ID_PREFIX}-body {
   background: ${ALMA_COLORS.white};
   width: 100vw;
   height: 100vh;
@@ -36,34 +36,34 @@ export const style = `
   border-radius: 0;
 }
 
-#${idPrefix}-close {
+#${MODAL_ID_PREFIX}-close {
   position: absolute;
   right: 15px;
   top: 15px;
   cursor: pointer;
 }
 
-#${idPrefix}-close:hover, #${idPrefix}-close:focus-visible {
+#${MODAL_ID_PREFIX}-close:hover, #${MODAL_ID_PREFIX}-close:focus-visible {
   box-shadow:
     0 0 0 3px ${ALMA_COLORS.white},
     0 0 0 5px ${ALMA_COLORS.orange};
     border-radius: 50%;
 }
 
-#${idPrefix}-logo {
+#${MODAL_ID_PREFIX}-logo {
   position: absolute;
   left: 15px;
   top: 15px;
 }
 
-#${idPrefix}-iframe {
+#${MODAL_ID_PREFIX}-iframe {
   width: 100%;
   height: 100%;
   border: 0;
 }
 
 @media (min-width: 768px) {
-  #${idPrefix}-body {
+  #${MODAL_ID_PREFIX}-body {
     position: relative;
     width: 80vw;
     height: 80vh;

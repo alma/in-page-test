@@ -14,7 +14,13 @@ export type InitializeOptions = {
   onModalClosed?: () => void;
 };
 
-type MessageType = "user_wants_to_pay";
+// Must be kept up to date with `Checkout/src/InPage/types.ts`
+export type MessageType =
+  | "embedded_loaded"
+  | "user_wants_to_pay"
+  | "can_open_modal"
+  | "payment_succeeded"
+  | "trigger_success_callback";
 
 export type Message = {
   type: MessageType;
