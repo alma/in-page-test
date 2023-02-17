@@ -1,4 +1,3 @@
-import { createStore } from "./store";
 import { InitializeOptions } from "./types";
 
 import { startListener } from "./messages/listener";
@@ -18,19 +17,23 @@ export namespace InPage {
     paymentId: string,
     options: InitializeOptions = {}
   ) {
-    const store = createStore(paymentId, options.environment);
+    // InPage state:
+    let isCheckoutLoaded = false;
+    let elementId: string | null = null;
+
+    const env = options.environment || "LIVE";
 
     const { onInPageStatusChanged, unsubscribe } = startListener(
-      store.getPaymentId(),
-      store.getEnvironment()
+      paymentId,
+      env
     );
 
     onInPageStatusChanged("embedded_loaded", () => {
-      store.setIsCheckoutLoaded(true);
+      isCheckoutLoaded = true;
     });
 
     onInPageStatusChanged("can_open_modal", () => {
-      showModal(store.getPaymentId(), store.getEnvironment());
+      showModal(paymentId, env);
     });
 
     onInPageStatusChanged("payment_succeeded", () => {
@@ -49,9 +52,18 @@ export namespace InPage {
     });
 
     return {
-      mount: (selector: string) => mount(store, selector),
-      startPayment: () => startPayment(store),
-      unmount: () => unmount(store, unsubscribe),
+      mount: (selector: string) => {
+        mount(paymentId, env, selector);
+        elementId = selector;
+      },
+      startPayment: () => {
+        if (isCheckoutLoaded) {
+          startPayment(env, paymentId, elementId);
+        } else {
+          console.log("Pas loaded :(");
+        }
+      },
+      unmount: () => unmount(elementId, unsubscribe),
     };
   }
 }

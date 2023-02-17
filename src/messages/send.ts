@@ -1,14 +1,11 @@
 import { getCheckoutUrlBasedOnEnv, getElement } from "../helpers";
-import { Store } from "../store";
 import { ENV, Message } from "../types";
 
-export function sendMessage(store: Store, message: Message, env: ENV) {
-  if (store.getIsCheckoutLoaded() === false) {
-    console.error("Can not send message yet, Checkout is not loaded.");
-    return false;
-  }
-
-  const selector = store.getEmbeddedSelector();
+export function sendMessage(
+  message: Message,
+  env: ENV,
+  selector: string | null
+) {
   if (!selector) {
     console.error("Can not send message yet, mount() has not been called.");
     return false;

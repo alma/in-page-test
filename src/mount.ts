@@ -1,22 +1,13 @@
 import { URLS } from "./constants";
 import { elementNotFound, getCheckoutUrl, getElement } from "./helpers";
-import { Store } from "./store";
+import { ENV } from "./types";
 
-export function mount(store: Store, selector: string) {
+export function mount(paymentId: string, env: ENV, selector: string) {
   if (!selector) {
     elementNotFound();
   }
-  if (store.getEmbeddedSelector()) {
-    throw new Error("Deja mount");
-  }
 
-  store.setEmbeddedSelector(selector);
-
-  const url = getCheckoutUrl(
-    store.getEnvironment(),
-    store.getPaymentId(),
-    URLS.embedded
-  );
+  const url = getCheckoutUrl(env, paymentId, URLS.embedded);
 
   injectIframe(selector, url);
 }
