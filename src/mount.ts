@@ -13,8 +13,8 @@ export function mount(store: Store, selector: string) {
   store.setEmbeddedSelector(selector);
 
   const url = getCheckoutUrl(
-    store.getEnvironment(),
     store.getPaymentId(),
+    store.getEnvironment(),
     URLS.embedded
   );
 

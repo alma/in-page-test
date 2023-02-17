@@ -78,7 +78,7 @@ function createIframeElement(paymentId: string, env: ENV) {
   const element = document.createElement("iframe");
   element.id = `${MODAL_ID_PREFIX}-iframe`;
   element.allow = "camera *;";
-  element.src = getCheckoutUrl(env, paymentId, URLS.modal);
+  element.src = getCheckoutUrl(paymentId, env, URLS.modal);
   element.title = "Alma payment iframe";
 
   return element;

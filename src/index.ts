@@ -1,6 +1,7 @@
 import { createStore } from "./store";
 import { InitializeOptions } from "./types";
 
+import { fetchReturnUrl } from "./helpers";
 import { startListener } from "./messages/listener";
 import { removeModal, removeModalCloseElement, showModal } from "./Modal/modal";
 import { mount } from "./mount";
@@ -19,6 +20,11 @@ export namespace InPage {
     options: InitializeOptions = {}
   ) {
     const store = createStore(paymentId, options.environment);
+    let returnUrl: string | null = null;
+
+    fetchReturnUrl(store.getPaymentId(), store.getEnvironment()).then((url) => {
+      returnUrl = url;
+    });
 
     const { onInPageStatusChanged, unsubscribe } = startListener(
       store.getPaymentId(),
@@ -42,9 +48,8 @@ export namespace InPage {
 
       if (options.onPaymentSucceeded) {
         options.onPaymentSucceeded();
-      } else {
-        // TODO: will require to fetch data, maybe from a GET payment?
-        console.log("Redirection to redirection_url");
+      } else if (returnUrl) {
+        window.location.assign(returnUrl);
       }
     });
 

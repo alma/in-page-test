@@ -39,7 +39,30 @@ export function getCheckoutUrlBasedOnEnv(env: ENV) {
   }
 }
 
-export function getCheckoutUrl(env: ENV, paymentId: string, url: string) {
+function getAlmaAPIUrlBasedOnEnv(env: ENV) {
+  switch (env) {
+    case "LOCAL":
+      return "http://localhost:1337";
+    case "TEST":
+    case "SANDBOX":
+      return "https://api.sandbox.getalma.eu";
+    case "STAGING":
+    case "DEV":
+      return "https://api.staging.almapay.com";
+    case "LIVE":
+    case "PROD":
+    default:
+      return "https://api.almapay.com";
+  }
+}
+
+export function fetchReturnUrl(paymentId: string, env: ENV) {
+  return fetch(getAlmaAPIUrlBasedOnEnv(env) + "/v1/payments/" + paymentId)
+    .then((response) => response.json())
+    .then((data) => data.return_url);
+}
+
+export function getCheckoutUrl(paymentId: string, env: ENV, url: string) {
   return getCheckoutUrlBasedOnEnv(env) + "/" + paymentId + url;
 }
 
